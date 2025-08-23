@@ -28,4 +28,3 @@ cardsData.forEach(item => {
   container.appendChild(card);
 });
 
-

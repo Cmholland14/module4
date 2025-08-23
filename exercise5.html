@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dynamic News Feed</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .news-item {
+      border: 1px solid #aaa;
+      padding: 1em;
+      margin-bottom: 1em;
+      border-radius: 5px;
+    }
+    .news-item h3 {
+      margin-top: 0;
+    }
+    form {
+      margin-bottom: 2em;
+    }
+    form input, form textarea {
+      display: block;
+      margin: 0.5em 0;
+      padding: 0.5em;
+      width: 300px;
+    }
+    button {
+      padding: 0.5em 1em;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Latest News</h1>
+
+  <form id="news-form">
+    <input type="text" id="title" placeholder="News Title" required />
+    <textarea id="content" placeholder="News Content" required></textarea>
+    <button type="submit">Add News</button>
+  </form>
+
+  <div id="news-container"></div>
+
+  <script>
+    let news = [
+      { id: 1, title: 'Election Results', content: 'Newly elected minister...' },
+      { id: 2, title: 'Sporting Success', content: 'World Cup winners...' },
+      { id: 3, title: 'Tornado Warning', content: 'Residents should prepare...' }
+    ];
+
+    const container = document.getElementById('news-container');
+    const form = document.getElementById('news-form');
+    const titleInput = document.getElementById('title');
+    const contentInput = document.getElementById('content');
+
+    function renderNews() {
+      container.innerHTML = ''; 
+      news.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'news-item';
+        div.innerHTML = `
+          <h3>${item.title}</h3>
+          <p>${item.content}</p>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault(); 
+
+      const newItem = {
+        id: news.length + 1,
+        title: titleInput.value,
+        content: contentInput.value
+      };
+
+      news.push(newItem);
+      renderNews(); 
+
+      form.reset(); 
+    });
+
+    renderNews();
+
+    setInterval(renderNews, 5000);
+  </script>
+</body>
+</html>
