@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECharts Example</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
+</head>
+<body>
+  <!-- Chart container -->
+  <div id="main" style="width: 900px; height: 600px;"></div>
+
+  <script type="text/javascript">
+    // Initialize the echarts instance
+    let myChart = echarts.init(document.getElementById('main'));
+
+    // Base options
+    let options = {
+      title: { text: 'Fake Store Categories' },
+      tooltip: {},
+      xAxis: { type: 'category', data: [] },
+      yAxis: { type: 'value' },
+      series: [{
+        name: '# Products',
+        type: 'bar',
+        data: []
+      }]
+    };
+
+    // Fetch products
+    fetch('https://fakestoreapi.com/products')
+      .then(response => response.json())
+      .then(products => {
+        console.log(products);
+
+        // Count products by category
+        let categoryCount = {};
+        products.forEach(p => {
+          categoryCount[p.category] = (categoryCount[p.category] || 0) + 1;
+        });
+
+        // Update chart data
+        options.xAxis.data = Object.keys(categoryCount);
+        options.series[0].data = Object.values(categoryCount);
+
+        // Render chart with updated data
+        myChart.setOption(options);
+      })
+      .catch(error => console.error("Error fetching data:", error));
+  </script>
+</body>
+</html>
