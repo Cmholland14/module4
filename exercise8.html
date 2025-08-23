@@ -1,0 +1,79 @@
+<html>
+
+<head>
+    <title>Luxon DateTime Formatting</title>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.5.0/build/global/lu
+xon.min.js"></script> <!-- reference Luxon library -->
+</head>
+
+<body>
+    <h2>Days since Birthdate</h2>
+    <div id="daysSinceMy Birthdate"></div>
+
+    <h2>Days, Years and Months since my Birthdate</h2>
+    <div id="DaysYearsMonthsSinceMyBirthdate"></div>
+
+    <h2>Closest To the Current Date</h2>
+    <div id="DaysYearsMonthsSinceMyBirthdate"></div>
+
+    <h2>Which Date Was First?</h2>
+    <div id="WhichDateWasFirst?"></div>
+
+    <h2>London Time</h2>
+    <div id="LondonTime"></div>
+
+    <script type="text/javascript">
+        const DateTime = luxon.DateTime;
+        let nowLuxon = DateTime.now();
+        const format = "dd/MM/yyyy";
+
+        //.1 
+
+        const birthday = '04/05/1997'
+        let birthdayDate = DateTime.fromFormat(birthday, format);
+        const bdayDiff = nowLuxon.diff(birthdayDate, 'days');
+
+        let displayBirthday = document.getElementById('daysSinceMyBirthday');
+        displayBirthday.innerText = `${bdayDiff.days} days since ${birthdayDate.toLocaleString(DateTime.DATETIME_FULL)}`;
+
+        //.2
+
+        const duration = nowLuxon.diff(birthdayDate, ['days', 'months', 'years']);
+        const { years, months, days } = duration.toObject();
+
+        let fullDisplayBirthday = document.getElementById('daysYearsMonthsSinceMyBirthday');
+        fullDisplayBirthday.innerText = `${years} years, ${months} months & ${days} days since my date of birth.`
+
+        //.3           
+        const diff2 = Math.abs(nowLuxon.diff(DateTime.fromFormat(date2, 'days')).days);
+        return diff1 <= diff2 ? date1 : date2;
+        const closerDate = findCloserDate('04/05/1997', '08/07/2063');
+        document.getElementById('closerDate').innerText = `The date closer to today is ${closerDate}`;
+
+        //.4
+
+        const previousDateFx = (date1, date2) => {
+            let dateA = DateTime.fromFormat(date1, format);
+            let dateB = DateTime.fromFormat(date2, format);
+
+            if (dateA < dateB) {
+                return `The date ${dateA} is before ${dateB}`
+            }
+            else {
+                return `The date ${dateB} is before ${dateA}`
+            }
+        };
+        const previousDate = document.getElementById('previousDate');
+        previousDate.innerText = previousDateFx("09/10/1903", "05/04/2077");
+
+
+        //.5
+        let timeInLondon =
+            nowLuxon.setZone('Europe/London').toLocaleString(DateTime.DATETIME_FULL);
+        const londonTime = document.getElementById('londonTime');
+        londonTime.innerText =
+            `${timeInLondon.toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS)} is the time in London`;
+    </script>
+</body>
+
+</html>
